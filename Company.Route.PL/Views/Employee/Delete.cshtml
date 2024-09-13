@@ -1,0 +1,22 @@
+﻿
+
+@model Employee
+
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete Employee</h1>
+
+<form asp-action="Delete">
+    <partial name="PartialViews/DeleteDetailsEmployeePartialView" model="Model" />
+    <br />
+    <br />
+    <input type="submit" value="Confirm Delete" class="btn btn-danger" />
+    @Html.ActionLink("Edit", "Update", new { id = Model.Id }, new { @class = "btn btn-warning" })
+
+
+
+    <a class="btn btn-light" asp-action="Index">Back to Employees list</a>
+</form>

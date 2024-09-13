@@ -2,6 +2,7 @@ using Company.Route.BLL.Interfaces;
 using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.Route.PL
@@ -22,11 +23,13 @@ namespace Company.Route.PL
             
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-            { 
+            {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlServer.GetConnectionString("DefaultConnection").logto
             });
 
             builder.Services.AddScoped<IDepartmentRespstory, DepartmentRepository>();  
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  
 
             var app = builder.Build();
 
@@ -44,7 +47,7 @@ namespace Company.Route.PL
             app.UseRouting();
 
             app.UseAuthorization();
-
+           
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

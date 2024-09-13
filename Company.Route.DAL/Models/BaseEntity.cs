@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Company.Route.DAL.Models
 {
-    public class Department : BaseEntity
+    public class BaseEntity
     {
-        [Required(ErrorMessage ="Code is required *")]
-        public string Code { get; set; }
+        public int Id { get; set; }
 
-        [Required(ErrorMessage ="Name is required *")]
+        [Required(ErrorMessage = "Name is required *")]
         public string? Name { get; set; }
+
 
         [DisplayName("Date Of Creation")]
         public DateTime? DateOfCreation { get; set; } = DateTime.Now;

@@ -1,0 +1,18 @@
+﻿
+@model Employee
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Employee Details</h1>
+
+<div>
+    <partial name="PartialViews/DeleteDetailsEmployeePartialView" model="Model" />
+    <br />
+    <br />
+    @Html.ActionLink("Edit Employee", "Update", new { id = Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Delete Employee", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    <a class="btn btn-light" asp-action="Index">Back to Employee list</a>
+</div>

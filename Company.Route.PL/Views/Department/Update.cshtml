@@ -1,24 +1,23 @@
-﻿
-@model Department
+﻿@model Department
 
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Update";
 }
 
-<h1>Create Department Page</h1>
+<h1>Edit Department Page</h1>
 
 <br />
 <br />
-@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-<form asp-action="Create">
+<form asp-action="Update">
     
     <partial name="PartialViews/UpdateCreateDepartmentPartialView" model="Model" />
 
+
     <br />
     <br />
-    <input type="submit" value="Create" class="btn btn-primary"/>
+    <input type="submit" value="Save Changes" class="btn btn-warning" />
     <a class="btn btn-light" asp-action="Index">Back To List</a>
 </form>
 
@@ -26,7 +25,6 @@
 @*make sure of the data before send to server by request . if the data is invalid wont send to server ..
 this step is very important to make sure to limit the number of the requests that sent to server to reduce the compressive on it..
 this setion is identify in _layout.cshtml after the JQuery script and in the >>  @await RenderSectionAsync("JQueryV", required: false) *@
-
 @section JQueryV {
     <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

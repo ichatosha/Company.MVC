@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace Company.Route.BLL.Interfaces
 {
-    public interface IDepartmentRespstory
+    public interface IDepartmentRespstory : IGenericRepository<Department>
     {
-        IEnumerable<Department> GetAll();
+        //IEnumerable<Department> GetAll();
 
-        Department GetById(int? id);
+        //Department GetById(int? id);
 
-        Department GetByName(string name);
+        //Department GetByName(string? name);
 
-        // return int cause of the func save.changes return int
-        int Add(Department entity);
+        //// return int cause of the func save.changes return int
+        //int Add(Department entity);
 
-        int Update(Department entity);
+        //int Update(Department entity);
 
-        int Delete(Department entity);
-
+        //int Delete(Department entity);
+        
+         
     }
 }
