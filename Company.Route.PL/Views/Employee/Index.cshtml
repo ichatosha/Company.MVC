@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Employee>
+﻿@using Company.Route.PL.ViewModels
+@model IEnumerable<EmployeeViewModel>
 
 
 @{
@@ -7,11 +8,40 @@
 
 <h1>All Employees</h1>
 <br />
+<br />
+
+
+<form asp-action="Index">
+    <div class="row m-5">
+        <div class="col-8">
+            <input type="text" name="WordSearch" id="WordSearch" placeholder="Seach By Name..." class="form-control" />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Search"  class="btn btn-success" />
+        </div>
+    </div>
+
+</form>
 
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create Employee</a>
 
 <br />
+<br />
+@* <div class="alert alert-success">
+    <p>@ViewData["MessageD"]</p>
+</div>
 
+<div class="alert alert-success">
+    <p>@ViewBag.MessageB</p>
+</div> *@
+
+@if(!string.IsNullOrEmpty(@TempData["Message"] as string))
+{
+    <div class="alert alert-success">
+        <p>@TempData["Message"]</p>
+    </div>
+
+}
 
 @if(Model.Count() > 0 )
 {
@@ -23,6 +53,7 @@
         <th>@Html.DisplayNameFor(D => D.Address)</th>
         <th>@Html.DisplayNameFor(D => D.Email)</th>
         <th>@Html.DisplayNameFor(D => D.PhoneNumber)</th>
+        <th>@Html.DisplayNameFor(D => D.WorkFor)</th>
         <th>@Html.DisplayNameFor(D => D.Salary)</th>
         <th>@Html.DisplayNameFor(D => D.isActive)</th>
         <th>@Html.DisplayNameFor(D => D.HiringDate)</th>
@@ -43,6 +74,7 @@
                     <td>@employee.Address</td>
                     <td>@Html.DisplayFor(M => employee.Email)</td>
                     <td>@employee.PhoneNumber</td>
+                    <td>@employee?.WorkFor?.Name</td>
                     <td>@Html.DisplayFor(M => employee.Salary)</td>
                     <td>@Html.DisplayFor(M => employee.isActive)</td>
                     <td>@employee.HiringDate</td>

@@ -2,8 +2,11 @@ using Company.Route.BLL.Interfaces;
 using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Company.Route.PL.Mapping;
+using Company.Route.PL.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Company.Route.PL
 {
@@ -29,7 +32,22 @@ namespace Company.Route.PL
             });
 
             builder.Services.AddScoped<IDepartmentRespstory, DepartmentRepository>();  
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            // The Diffrence between the three ways is Life Time
+            //builder.Services.AddScoped();       // LifeTime Per Request , then Object UnReachable
+            //builder.Services.AddTransient();    // LifeTime Per Operations 
+            //builder.Services.AddSingleton();    // LifeTime Per Apllication
+
+            builder.Services.AddScoped<IScopedService, ScopedService>();            // LifeTime Per Request    [Best For DbContext Class , Repository Class]
+            builder.Services.AddTransient<ITransientService, TransientService>();   // LifeTime Per Operation
+            builder.Services.AddSingleton<ISingletonService, SingletonService>();   // LifeTime Per Application
+
+            //enable Auto Mapper :: many overloads
+            //builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+            //builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());            // [Recommended]
+
 
             var app = builder.Build();
 

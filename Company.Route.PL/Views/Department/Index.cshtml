@@ -11,6 +11,16 @@
 <a asp-controller="Department" asp-action="Create" class="btn btn-primary">Create Department</a>
 
 <br />
+<br />
+
+@if (!string.IsNullOrEmpty(@TempData["Message"] as string))
+{
+    <div class="alert alert-success">
+        <p>@TempData["Message"]</p>
+    </div>
+
+}
+
 
 
 @if(Model.Count() > 0 )

@@ -50,7 +50,12 @@ namespace Company.Route.PL.Controllers
 
                 if (create > 0)
                 {
+                    TempData["Message"] = "Department is Created Successfully";
                     return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Message"] = "Department is Not Created Successfully";
                 }
             }
             return View(model);

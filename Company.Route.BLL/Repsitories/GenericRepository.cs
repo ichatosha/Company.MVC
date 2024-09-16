@@ -1,6 +1,7 @@
 ﻿using Company.Route.BLL.Interfaces;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Company.Route.BLL.Repsitories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-
-        private readonly AppDbContext _context;
+        // Protected to use in classes that inherit from base 
+        private protected readonly AppDbContext _context;
 
         public GenericRepository(AppDbContext context)
         {
@@ -21,7 +22,12 @@ namespace Company.Route.BLL.Repsitories
 
         public IEnumerable<T> GetAll()
         {
-           return _context.Set<T>().ToList();
+            if(typeof(T) == typeof(Employee))
+            {
+                // AsNoTracking : More Secure
+                return (IEnumerable<T>) _context.Employees.Include(E => E.WorkFor).AsNoTracking().ToList();
+            }
+           return _context.Set<T>().AsNoTracking().ToList();
         }
 
         public T GetById(int id)

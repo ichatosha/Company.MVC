@@ -21,6 +21,11 @@ namespace Company.Route.BLL.Repsitories
             
         }
 
+        //public Department GetByName(string? name)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         //public IEnumerable<Department> GetAll()
         //{
         //    return _context.Departments.ToList();

@@ -18,5 +18,9 @@ namespace Company.Route.DAL.Models
 
         [DisplayName("Date Of Creation")]
         public DateTime? DateOfCreation { get; set; } = DateTime.Now;
+
+
+        // One To Many Collection Or List Or Sequence...
+        public ICollection<Employee>? Employees { get; set; }
     }
 }

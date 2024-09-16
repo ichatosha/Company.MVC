@@ -1,6 +1,7 @@
 ﻿using Company.Route.BLL.Interfaces;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,12 @@ namespace Company.Route.BLL.Repsitories
         public EmployeeRepository(AppDbContext context) : base (context)
         {
             
+        }
+
+        public IEnumerable<Employee> GetByName(string name)
+        {
+            var search = _context.Employees.Where(E => E.Name.ToLower().Contains(name.ToLower())).Include(E => E.WorkFor).ToList();
+            return search;
         }
 
         //public IEnumerable<Employee> GetAll()
