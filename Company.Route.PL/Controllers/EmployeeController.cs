@@ -109,7 +109,6 @@ namespace Company.Route.PL.Controllers
                 // Auto Mapping
                 var employee =  _mapper.Map<Employee>(model);
 
-
                 if (employee.DateOfCreation == null)
                 {
                     employee.DateOfCreation = DateTime.Now;
@@ -137,13 +136,12 @@ namespace Company.Route.PL.Controllers
         {
 
             if (id is null) return BadRequest(); //400
-
             var result = _employeeRepository.GetById(id.Value);
-
             if (result == null) return NotFound(); //404
+            // Convert From Employee To EmployeeViewModel
+            var employee = _mapper.Map<EmployeeViewModel>(result);
 
-
-            return View(ViewName, result);
+            return View(ViewName, employee);
         }
 
         #endregion
@@ -163,22 +161,22 @@ namespace Company.Route.PL.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Update(int? id, EmployeeViewModel UpdatedEmployee)
+        public IActionResult Update(int? id, EmployeeViewModel model)
         {
-            if (id != UpdatedEmployee.Id) return BadRequest();
+            if (id != model.Id) return BadRequest();
 
             if (ModelState.IsValid)
             {
                 // Auto Mapping
-                var employee = _mapper.Map<Employee>(UpdatedEmployee);
+                var employee = _mapper.Map<Employee>(model);
                 var result = _employeeRepository.Update(employee);
                 if (result > 0)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
             }
             // else : stay in model
-            return View(UpdatedEmployee);
+            return View(model);
 
         }
 
