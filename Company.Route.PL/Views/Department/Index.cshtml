@@ -1,11 +1,11 @@
-﻿@model IEnumerable<Department>
-
+﻿@using Company.Route.PL.ViewModels
+@model IEnumerable<DepartmentViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>All Departments</h1>
+<h1>All Departments</h1> 
 <br />
 
 <a asp-controller="Department" asp-action="Create" class="btn btn-primary">Create Department</a>
@@ -13,14 +13,21 @@
 <br />
 <br />
 
+
+
+@if (!string.IsNullOrEmpty(@TempData["NoEmpInDept"] as string))
+{
+    <div class="alert alert-danger">
+        <p>@TempData["NoEmpInDept"]</p>
+    </div>
+}
+
 @if (!string.IsNullOrEmpty(@TempData["Message"] as string))
 {
     <div class="alert alert-success">
         <p>@TempData["Message"]</p>
     </div>
-
 }
-
 
 
 @if(Model.Count() > 0 )
@@ -31,11 +38,12 @@
         <th>@Html.DisplayNameFor(D => D.Code)</th>
         <th>@Html.DisplayNameFor(D => D.Name)</th>
         <th>@Html.DisplayNameFor(D => D.DateOfCreation)</th>
+        <th>View Employees In</th>
         <th>Details</th>
         <th>Update</th>
         <th>Delete</th>
         </thead>
-
+           
         <tbody>
             @foreach (var department in Model)
             {
@@ -43,6 +51,11 @@
                     <td>@department.Code</td>
                     <td>@department.Name</td>
                     <td>@department.DateOfCreation</td>
+                    <td>
+                        <a href="@Url.Action("EmployeesByDepartment", "EmployeesByDepartment", new { departmentId = department.Id })">
+                            View Employees
+                        </a>
+                    </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@department.Id" class="btn btn-warning">Details</a>
                     </td>

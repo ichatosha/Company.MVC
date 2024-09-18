@@ -11,6 +11,8 @@ namespace Company.Route.BLL.Interfaces
     {
         // IEnum to return more than one Employee 
         IEnumerable<Employee> GetByName(string name);
+        IEnumerable<Employee> GetByNameByDept(int? id, string name);
+
 
         //IEnumerable<Employee> GetAll();
 

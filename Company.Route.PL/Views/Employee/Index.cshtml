@@ -2,6 +2,7 @@
 @model IEnumerable<EmployeeViewModel>
 
 
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -59,7 +60,6 @@
         <th>@Html.DisplayNameFor(D => D.HiringDate)</th>
         <th>@Html.DisplayNameFor(D => D.DateOfCreation)</th>
         <th>@Html.DisplayNameFor(D => D.isDeleted)</th>
-
         <th>Details</th>
         <th>Update</th>
         <th>Delete</th>
@@ -74,13 +74,12 @@
                     <td>@employee.Address</td>
                     <td>@Html.DisplayFor(M => employee.Email)</td>
                     <td>@employee.PhoneNumber</td>
-                    <td>@employee?.WorkFor?.Name</td>
+                    <td>@employee.WorkFor?.Name</td>
                     <td>@Html.DisplayFor(M => employee.Salary)</td>
                     <td>@Html.DisplayFor(M => employee.isActive)</td>
                     <td>@employee.HiringDate</td>
                     <td>@employee.DateOfCreation</td>
                     <td>@employee.isDeleted</td>
-                    
                     <td>
                         <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning">Details</a>
                     </td>

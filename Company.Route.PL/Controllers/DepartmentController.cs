@@ -1,8 +1,11 @@
-﻿using Company.Route.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.Route.BLL.Interfaces;
 using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Company.Route.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace Company.Route.PL.Controllers
 {
@@ -10,23 +13,38 @@ namespace Company.Route.PL.Controllers
     {
         // make object from this interface 
         private readonly IDepartmentRespstory _departmentRepository;
-        
+        private readonly IMapper _mapper;
         private readonly AppDbContext _context;
         
         // ask CLR to create object from DepartmentRepository
-        public DepartmentController(AppDbContext context , IDepartmentRespstory departmentRepository)
+        public DepartmentController(AppDbContext context , IDepartmentRespstory departmentRepository, IMapper mapper)
         {
             _context = context;
             _departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
 
+
+
+
+
+
+
+        #region Get All
         [HttpGet]
         public IActionResult Index()
         {
+            var allDepartments = Enumerable.Empty<Department>();
             var AllDepartments = _departmentRepository.GetAll();
-            return View(AllDepartments);
-        }
 
+            //Auto Mapping
+            var result = _mapper.Map<IEnumerable<DepartmentViewModel>>(AllDepartments);
+
+            return View(result);
+        }
+        #endregion
+
+        #region Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -37,7 +55,7 @@ namespace Company.Route.PL.Controllers
         [HttpPost]
         // decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Department model)
+        public IActionResult Create(DepartmentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,8 +64,10 @@ namespace Company.Route.PL.Controllers
                     model.DateOfCreation = DateTime.Now;
                 }
 
-                var create = _departmentRepository.Add(model);
+                var result = _mapper.Map<Department>(model);
 
+                var create = _departmentRepository.Add(result);
+                
                 if (create > 0)
                 {
                     TempData["Message"] = "Department is Created Successfully";
@@ -60,6 +80,10 @@ namespace Company.Route.PL.Controllers
             }
             return View(model);
         }
+
+        #endregion
+
+        #region Details
         [HttpGet]
         public IActionResult Details(int? id , string viewName = "Details")
         {
@@ -71,9 +95,12 @@ namespace Company.Route.PL.Controllers
             {
                 return NotFound(); // 404
             }
-            return View(viewName ,result);
+            var ViewModel = _mapper.Map<DepartmentViewModel>(result);
+            return View(viewName ,ViewModel);
         }
+        #endregion
 
+        #region Update
         // Update
         [HttpGet]
         public IActionResult Update(int? id)
@@ -98,13 +125,14 @@ namespace Company.Route.PL.Controllers
         // decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
         // [FromRoute] >> to take the id from segment only not from form
-        public IActionResult Update([FromRoute] int? id , Department UpdatedDepartment)
+        public IActionResult Update([FromRoute] int? id , DepartmentViewModel UpdatedDepartment)
         {
             if (id != UpdatedDepartment.Id) return BadRequest(); // 400
 
             if(ModelState.IsValid)
             {
-                var result = _departmentRepository.Update(UpdatedDepartment);
+                var ViewModel = _mapper.Map<Department>(UpdatedDepartment);
+                var result = _departmentRepository.Update(ViewModel);
                 if(result > 0 )
                 {
                     return RedirectToAction(nameof(Index));
@@ -136,6 +164,10 @@ namespace Company.Route.PL.Controllers
             var departments = _context.Departments.ToList();
             return View(departments);
         }
+
+        #endregion 
+
+        #region Delete
         // Delete
         [HttpGet]
         public IActionResult Delete(int? id)
@@ -161,7 +193,7 @@ namespace Company.Route.PL.Controllers
         //decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
         // [FromRoute] >> to take the id from segment only not from form
-        public IActionResult Delete([FromRoute] int? id , Department deletedDepartment)
+        public IActionResult Delete([FromRoute] int? id , DepartmentViewModel deletedDepartment)
         {
             if (id is null) return BadRequest(); // 400
 
@@ -169,7 +201,8 @@ namespace Company.Route.PL.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = _departmentRepository.Delete(deletedDepartment);
+                var ViewModel = _mapper.Map<Department>(deletedDepartment);
+                var result = _departmentRepository.Delete(ViewModel);
                 if (result > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -180,6 +213,7 @@ namespace Company.Route.PL.Controllers
             return View(deletedDepartment);
 
         }
+        #endregion
     }
 
 }

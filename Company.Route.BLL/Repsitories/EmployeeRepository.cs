@@ -25,6 +25,17 @@ namespace Company.Route.BLL.Repsitories
             return search;
         }
 
+
+        public IEnumerable<Employee> GetByNameByDept(int? id, string name)
+        {
+            var allEmployeesInThisDept = _context.Employees
+                .Where(e => e.WorkForId == id &&
+                           (string.IsNullOrEmpty(name) || e.Name.ToLower().Contains(name.ToLower())))
+                .Include(e => e.WorkFor)
+                .ToList();
+
+            return allEmployeesInThisDept;
+        }
         //public IEnumerable<Employee> GetAll()
         //{
         //    return _context.Employees.ToList();

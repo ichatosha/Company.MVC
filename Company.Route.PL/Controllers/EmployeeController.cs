@@ -14,7 +14,6 @@ namespace Company.Route.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
-
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IDepartmentRespstory _departmentRespstory;
         private readonly IMapper _mapper;
@@ -69,6 +68,13 @@ namespace Company.Route.PL.Controllers
 
             return View(result);
         }
+
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    var  AllEmployees = _employeeRepository.ToList();
+        //    return View(AllEmployees);
+        //}
         #endregion
 
 
@@ -224,6 +230,6 @@ namespace Company.Route.PL.Controllers
         #endregion
 
 
-
+        
     }
 }
