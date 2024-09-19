@@ -32,10 +32,10 @@ namespace Company.Route.PL.Controllers
 
         #region Get All
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var allDepartments = Enumerable.Empty<Department>();
-            var AllDepartments = _departmentRepository.GetAll();
+            //var allDepartments = Enumerable.Empty<Department>();
+            var AllDepartments = await _departmentRepository.GetAllAsync();
 
             //Auto Mapping
             var result = _mapper.Map<IEnumerable<DepartmentViewModel>>(AllDepartments);
@@ -55,7 +55,7 @@ namespace Company.Route.PL.Controllers
         [HttpPost]
         // decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DepartmentViewModel model)
+        public async Task<IActionResult> Create(DepartmentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -63,11 +63,8 @@ namespace Company.Route.PL.Controllers
                 {
                     model.DateOfCreation = DateTime.Now;
                 }
-
                 var result = _mapper.Map<Department>(model);
-
-                var create = _departmentRepository.Add(result);
-                
+                var create = await _departmentRepository.AddAsync(result);
                 if (create > 0)
                 {
                     TempData["Message"] = "Department is Created Successfully";
@@ -85,11 +82,11 @@ namespace Company.Route.PL.Controllers
 
         #region Details
         [HttpGet]
-        public IActionResult Details(int? id , string viewName = "Details")
+        public async Task<IActionResult> Details(int? id , string viewName = "Details")
         {
             // Bad Request
             if (id is null) return BadRequest(); // 400
-            var result = _departmentRepository.GetById(id.Value);
+            var result = await _departmentRepository.GetByIdAsync(id.Value);
             // Not Found
             if(result is null)
             {
@@ -103,7 +100,7 @@ namespace Company.Route.PL.Controllers
         #region Update
         // Update
         [HttpGet]
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
             //// Bad Request
             //if (id is null) return BadRequest();
@@ -118,21 +115,21 @@ namespace Company.Route.PL.Controllers
             //return View(result);
 
             // less the repetition of code
-            return Details(id , "Update");
+            return await Details(id , "Update");
         }
 
         [HttpPost]
         // decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
         // [FromRoute] >> to take the id from segment only not from form
-        public IActionResult Update([FromRoute] int? id , DepartmentViewModel UpdatedDepartment)
+        public async Task<IActionResult> Update([FromRoute] int? id , DepartmentViewModel UpdatedDepartment)
         {
             if (id != UpdatedDepartment.Id) return BadRequest(); // 400
 
             if(ModelState.IsValid)
             {
                 var ViewModel = _mapper.Map<Department>(UpdatedDepartment);
-                var result = _departmentRepository.Update(ViewModel);
+                var result = await _departmentRepository.UpdateAsync(ViewModel);
                 if(result > 0 )
                 {
                     return RedirectToAction(nameof(Index));
@@ -170,7 +167,7 @@ namespace Company.Route.PL.Controllers
         #region Delete
         // Delete
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             //if (id is null) { return BadRequest(); } // 400
 
@@ -183,7 +180,7 @@ namespace Company.Route.PL.Controllers
             //return View(result);
 
             // lessw the repetition of code
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
 
         }
 
@@ -193,7 +190,7 @@ namespace Company.Route.PL.Controllers
         //decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
         // [FromRoute] >> to take the id from segment only not from form
-        public IActionResult Delete([FromRoute] int? id , DepartmentViewModel deletedDepartment)
+        public async Task<IActionResult> Delete([FromRoute] int? id , DepartmentViewModel deletedDepartment)
         {
             if (id is null) return BadRequest(); // 400
 
@@ -202,7 +199,7 @@ namespace Company.Route.PL.Controllers
             if (ModelState.IsValid)
             {
                 var ViewModel = _mapper.Map<Department>(deletedDepartment);
-                var result = _departmentRepository.Delete(ViewModel);
+                var result = await _departmentRepository.DeleteAsync(ViewModel);
                 if (result > 0)
                 {
                     return RedirectToAction(nameof(Index));

@@ -34,4 +34,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Media\images\" />
+    <Folder Include="wwwroot\Media\videos\" />
+  </ItemGroup>
+
 </Project>

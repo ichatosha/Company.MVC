@@ -12,9 +12,10 @@
 <br />
 <br />
 
-<form asp-action="Update">
+<form asp-action="Update" enctype="multipart/form-data">
     
     <partial name="PartialViews/UpdateCreateEmployeePartialView" model="Model" />
+    <input asp-for="imageName" hidden />
 
     <br />
     <br />

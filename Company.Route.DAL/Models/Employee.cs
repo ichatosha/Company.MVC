@@ -38,6 +38,7 @@ namespace Company.Route.DAL.Models
         // EF Core by default : Didn't Loading The Navigitional Property
         public Department? WorkFor {  get; set; }
 
+        public string? imageName { get; set; }
 
 
     }

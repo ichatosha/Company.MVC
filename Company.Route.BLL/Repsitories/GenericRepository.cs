@@ -20,37 +20,44 @@ namespace Company.Route.BLL.Repsitories
             _context = context;
         }
 
-        public IEnumerable<T> GetAll()
+
+        // Async return => void Or Task Or Task<>
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             if(typeof(T) == typeof(Employee))
             {
                 // AsNoTracking : More Secure
-                return (IEnumerable<T>) _context.Employees.Include(E => E.WorkFor).AsNoTracking().ToList();
+                return (IEnumerable<T>) await _context.Employees.Include(E => E.WorkFor).AsNoTracking().ToListAsync();
             }
-           return _context.Set<T>().AsNoTracking().ToList();
+           return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return _context.Set<T>().Find(id);
-        }
-        public int Add(T entity)
-        {
-            _context.Set<T>().Add(entity);
-            return _context.SaveChanges();
+            return await _context.Set<T>().FindAsync(id);
+
         }
 
-        public int Update(T entity)
+        public async Task<int> AddAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
-            return _context.SaveChanges();
+            await _context.Set<T>().AddAsync(entity);
+            return await _context.SaveChangesAsync();
         }
 
-        public int Delete(T entity)
+        public async Task<int> UpdateAsync(T entity)
         {
+            // update has not Async
+             _context.Set<T>().Update(entity);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteAsync(T entity)
+        {
+            // Delete has not Async
             _context.Set<T>().Remove(entity);
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
 
     }
 }
+

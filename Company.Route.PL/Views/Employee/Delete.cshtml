@@ -12,6 +12,7 @@
 <form asp-action="Delete">
     <partial name="PartialViews/DeleteDetailsEmployeePartialView" model="Model" />
     <br />
+    <input asp-for="imageName" hidden/>
     <br />
     <input type="submit" value="Confirm Delete" class="btn btn-danger" />
     @Html.ActionLink("Edit", "Update", new { id = Model.Id }, new { @class = "btn btn-warning" })

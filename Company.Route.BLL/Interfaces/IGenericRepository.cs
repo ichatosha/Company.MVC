@@ -9,16 +9,15 @@ namespace Company.Route.BLL.Interfaces
     // Generic Repo to refactoring the code
     public interface IGenericRepository<T>
     {
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
-        T GetById(int id);
+        Task<T> GetByIdAsync(int id);
 
-        int Add(T employee);
+        Task<int> AddAsync(T employee);
 
-        int Update(T employee);
+        Task<int> UpdateAsync(T employee);
 
-        int Delete(T employee);
-
+        Task<int> DeleteAsync(T employee);
 
     }
 }

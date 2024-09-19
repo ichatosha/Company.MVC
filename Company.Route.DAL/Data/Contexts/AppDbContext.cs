@@ -1,5 +1,7 @@
 ﻿using Company.Route.DAL.Data.Configuration;
 using Company.Route.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Company.Route.DAL.Data.Contexts
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,5 +35,11 @@ namespace Company.Route.DAL.Data.Contexts
         public DbSet<Department> Departments { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
+
+
+        // Identity
+        //public DbSet<IdentityUser> Users { get; set; }
+
+        //public DbSet<IdentityRole> Roles { get; set; }
     }
 }

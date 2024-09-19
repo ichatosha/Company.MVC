@@ -19,15 +19,20 @@ namespace Company.Route.PL.ViewModels
             ErrorMessage = ("Address Must be Like 123-Street-City-Country"))]
         public string Address { get; set; }
 
+
         [Range(23, 59, ErrorMessage = "Age must be between 23 and 59")]
         public int? Age { get; set; }
+
+
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Salary is required !")]
         public decimal Salary { get; set; }
 
+
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
 
         //[Phone]
         [RegularExpression(@"^(?:\+20|0)?1[0125]\d{8}$", ErrorMessage = "phone number must be like this +2001012345678")]
@@ -45,6 +50,10 @@ namespace Company.Route.PL.ViewModels
         // Navigational Property
         // EF Core by default : Didn't Loading The Navigitional Property
         public Department? WorkFor { get; set; }
+
+        public IFormFile? Image { get; set; }
+
+        public string? imageName { get; set; }
 
     }
 }

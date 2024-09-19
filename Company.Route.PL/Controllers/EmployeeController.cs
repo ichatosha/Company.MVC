@@ -3,11 +3,13 @@ using Company.Route.BLL.Interfaces;
 using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
+using Company.Route.PL.Helpers;
 using Company.Route.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Reflection.Metadata;
 
 namespace Company.Route.PL.Controllers
 {
@@ -37,18 +39,18 @@ namespace Company.Route.PL.Controllers
         // this function Work [httpPost] if WordSearch is not null
         // ............. Work [httpGet] if WordSearch is null
         // this function Works Get And Post together depends on paramter is null or not
-        public IActionResult Index(string WordSearch)
+        public async Task<IActionResult> Index(string WordSearch)
         {
 
             var AllEmployees = Enumerable.Empty<Employee>();
             //var employeeViewModels = new Collection<EmployeeViewModel>();
             if (string.IsNullOrEmpty(WordSearch))
             {
-                 AllEmployees =  _employeeRepository.GetAll();
+                 AllEmployees = await _employeeRepository.GetAllAsync();
             }
             else
             {
-                AllEmployees = _employeeRepository.GetByName(WordSearch);
+                AllEmployees = await _employeeRepository.GetByNameAsync(WordSearch);
             }
 
             // Auto Mapping
@@ -81,9 +83,9 @@ namespace Company.Route.PL.Controllers
         #region Create
         // CREATE
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         { 
-            var departments = _departmentRespstory.GetAll(); // Extra Information 
+            var departments = await _departmentRespstory.GetAllAsync(); // Extra Information 
             //EF Core by default : Don't Loading The Navigitional Property
             // Views Diact :
             // 2. ViewData
@@ -96,10 +98,12 @@ namespace Company.Route.PL.Controllers
         [HttpPost]
         // decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeViewModel model)
+        public async Task<IActionResult> Create(EmployeeViewModel model)
         {
             if (ModelState.IsValid)
             {
+                model.imageName = model.Image != null ? DocumentSettings.UploadFile(model.Image, "images") : null;
+                //model.imageName = DocumentSettings.UploadFile(model.Image,"images");
                 // Casting From ViewModel To Model : 
                 // EmployeeViewModel => Employee
 
@@ -119,7 +123,7 @@ namespace Company.Route.PL.Controllers
                 {
                     employee.DateOfCreation = DateTime.Now;
                 }
-                var result = _employeeRepository.Add(employee);
+                var result = await _employeeRepository.AddAsync(employee);
                 if (result > 0)
                 {
                     TempData["Message"] = "Employee is Created Successfully";
@@ -138,11 +142,11 @@ namespace Company.Route.PL.Controllers
 
         #region Details
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
 
             if (id is null) return BadRequest(); //400
-            var result = _employeeRepository.GetById(id.Value);
+            var result = await _employeeRepository.GetByIdAsync(id.Value);
             if (result == null) return NotFound(); //404
             // Convert From Employee To EmployeeViewModel
             var employee = _mapper.Map<EmployeeViewModel>(result);
@@ -155,27 +159,34 @@ namespace Company.Route.PL.Controllers
 
         #region Update
         [HttpGet]
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
-            var departments = _departmentRespstory.GetAll(); // Extra Information 
+            var departments = await _departmentRespstory.GetAllAsync(); // Extra Information 
             //EF Core by default : Don't Loading The Navigitional Property
             // Views Diact :
             // 2. ViewData
             ViewData["Departments"] = departments;
-            return Details(id, "Update");
+            return await Details(id, "Update");
         }
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Update(int? id, EmployeeViewModel model)
+        public async Task<IActionResult> Update(int? id, EmployeeViewModel model)
         {
             if (id != model.Id) return BadRequest();
 
             if (ModelState.IsValid)
             {
+
+                if (model.imageName != null)
+                {
+                    DocumentSettings.DeleteFile(model.imageName, "images");
+                }
+                //model.imageName = DocumentSettings.UploadFile(model.Image, "images");
+                model.imageName = model.Image != null ? DocumentSettings.UploadFile(model.Image, "images") : null;
                 // Auto Mapping
                 var employee = _mapper.Map<Employee>(model);
-                var result = _employeeRepository.Update(employee);
+                var result = await _employeeRepository.UpdateAsync(employee);
                 if (result > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -198,10 +209,10 @@ namespace Company.Route.PL.Controllers
         #region Delete
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
             
         }
 
@@ -210,7 +221,7 @@ namespace Company.Route.PL.Controllers
         //decline any outside token can edit in web Like : Postman 
         [ValidateAntiForgeryToken]
         // [FromRoute] >> to take the id from segment only not from form
-        public IActionResult Delete([FromRoute] int? id , EmployeeViewModel DeletedEmployee)
+        public async Task<IActionResult> Delete([FromRoute] int? id , EmployeeViewModel DeletedEmployee)
         {
             if (id is null) return BadRequest();
 
@@ -218,9 +229,10 @@ namespace Company.Route.PL.Controllers
             {
                 // Auto Mapper
                 var DeleteEmployee = _mapper.Map<Employee>(DeletedEmployee);
-                var result = _employeeRepository.Delete(DeleteEmployee);
+                var result = await _employeeRepository.DeleteAsync(DeleteEmployee);
                 if (result > 0)
                 {
+                    DocumentSettings.DeleteFile(DeletedEmployee.imageName, "images");
                     return RedirectToAction("Index");
                 }
             }

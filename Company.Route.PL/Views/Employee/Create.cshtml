@@ -13,7 +13,7 @@
 <br />
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
 
    
     <partial name="PartialViews/UpdateCreateEmployeePartialView" model="Model" />

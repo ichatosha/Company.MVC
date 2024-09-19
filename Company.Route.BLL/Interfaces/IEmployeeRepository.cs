@@ -10,8 +10,9 @@ namespace Company.Route.BLL.Interfaces
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
         // IEnum to return more than one Employee 
-        IEnumerable<Employee> GetByName(string name);
+        Task<IEnumerable<Employee>> GetByNameAsync(string name);
         IEnumerable<Employee> GetByNameByDept(int? id, string name);
+
 
 
         //IEnumerable<Employee> GetAll();

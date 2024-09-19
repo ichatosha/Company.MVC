@@ -19,10 +19,10 @@ namespace Company.Route.BLL.Repsitories
             
         }
 
-        public IEnumerable<Employee> GetByName(string name)
+        public async Task<IEnumerable<Employee>> GetByNameAsync(string name)
         {
-            var search = _context.Employees.Where(E => E.Name.ToLower().Contains(name.ToLower())).Include(E => E.WorkFor).ToList();
-            return search;
+            return await _context.Employees.Where(E => E.Name.ToLower().Contains(name.ToLower())).Include(E => E.WorkFor).ToListAsync();
+             
         }
 
 

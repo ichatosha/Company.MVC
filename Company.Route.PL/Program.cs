@@ -4,6 +4,7 @@ using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
 using Company.Route.PL.Mapping;
 using Company.Route.PL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -47,6 +48,9 @@ namespace Company.Route.PL
             //builder.Services.AddAutoMapper(typeof(EmployeeProfile));
             //builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());            // [Recommended]
+
+            // allow DI for userManager And Sotres: 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 
             var app = builder.Build();
