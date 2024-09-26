@@ -5,6 +5,7 @@ using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
 using Company.Route.PL.Helpers;
 using Company.Route.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.ObjectModel;
@@ -13,7 +14,8 @@ using System.Reflection.Metadata;
 
 namespace Company.Route.PL.Controllers
 {
-    public class EmployeeController : Controller
+	[Authorize]
+	public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;

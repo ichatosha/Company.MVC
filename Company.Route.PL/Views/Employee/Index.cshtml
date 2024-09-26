@@ -84,15 +84,7 @@
                     <td>@employee.HiringDate</td>
                     <td>@employee.DateOfCreation</td>
                     <td>@employee.isDeleted</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning">Details</a>
-                    </td>
-                    <td>
-                        <a asp-action="Update" asp-route-id="@employee.Id" class="btn btn-success">Update</a>
-                    </td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Delete</a>
-                    </td>
+                    <partial name="_ButtonsPartialView" model="@employee.Id.ToString()" />
                 </tr>
             }
         </tbody>

@@ -4,13 +4,15 @@ using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
 using Company.Route.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Company.Route.PL.Controllers
 {
-    public class EmployeesByDepartmentController : Controller
+	[Authorize]
+	public class EmployeesByDepartmentController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;

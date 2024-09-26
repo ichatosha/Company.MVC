@@ -56,15 +56,7 @@
                             View Employees
                         </a>
                     </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@department.Id" class="btn btn-warning">Details</a>
-                    </td>
-                    <td>
-                        <a asp-action="Update"  asp-route-id="@department.Id"  class="btn btn-success">Update</a>
-                    </td>
-                    <td>
-                        <a asp-action="Delete"  asp-route-id="@department.Id"  class="btn btn-danger">Delete</a>
-                    </td>
+                    <partial name="_ButtonsPartialView" model="@department.Id.ToString()" />
                 </tr>
             }
         </tbody>

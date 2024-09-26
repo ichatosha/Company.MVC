@@ -4,11 +4,13 @@ using Company.Route.BLL.Repsitories;
 using Company.Route.DAL.Data.Contexts;
 using Company.Route.DAL.Models;
 using Company.Route.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 
 namespace Company.Route.PL.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         // make object from this interface 

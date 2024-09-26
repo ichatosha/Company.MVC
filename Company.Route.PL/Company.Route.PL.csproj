@@ -14,6 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Department\PartialViews\_ButtonsPartialView.cshtml" />
+    <Content Remove="Views\Employee\PartialViews\_ButtonsPartialView.cshtml" />
+    <Content Remove="Views\Shared\_ButtonsPartialView.cshtml" />
+    <Content Remove="Views\Role\RolePartialViews\_ButtonsPartialView.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
@@ -37,6 +44,21 @@
   <ItemGroup>
     <Folder Include="wwwroot\Media\images\" />
     <Folder Include="wwwroot\Media\videos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_ButtonsPartialView.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_ButtonsPartialView.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Department\_ButtonsPartialView.cshtml" />
+    <None Include="Views\Employee\_ButtonsPartialView.cshtml" />
+    <None Include="Views\Role\RolePartialViews\_ButtonsPartialView.cshtml" />
+    <None Include="Views\User\UserPartialViews\_ButtonsPartialView.cshtml" />
   </ItemGroup>
 
 </Project>

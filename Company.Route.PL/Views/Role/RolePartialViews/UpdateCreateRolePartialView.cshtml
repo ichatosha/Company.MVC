@@ -1,0 +1,8 @@
+﻿@using Company.Route.PL.ViewModels
+@model RoleViewModel
+
+<div class="form-group">
+    <label asp-for="RoleName" class="col-form-label">Role Name</label>
+    <input asp-for="RoleName" class="form-control" />
+    <span asp-validation-for="RoleName" class="text-danger"></span>
+</div>

@@ -22,9 +22,9 @@ namespace Company.Route.PL.ViewModels
 
 
         [Required(ErrorMessage = "Password is required !")]
-        [DataType(DataType.Password)]
-        [MinLength(5, ErrorMessage = "Password Min Length is 5 digits")]
-        [MaxLength(25, ErrorMessage = "Password Max Length is 25 digits")]
+        //[DataType(DataType.Password)]
+        //[MinLength(5, ErrorMessage = "Password Min Length is 5 digits")]
+        //[MaxLength(25, ErrorMessage = "Password Max Length is 25 digits")]
         public string Password { get; set; }
 
 

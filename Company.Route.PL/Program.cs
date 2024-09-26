@@ -50,8 +50,15 @@ namespace Company.Route.PL
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());            // [Recommended]
 
             // allow DI for userManager And Sotres: 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/Account/SignIn";
+                config.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             var app = builder.Build();
 
@@ -68,11 +75,12 @@ namespace Company.Route.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
            
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=SignIn}/{id?}");
 
             app.Run();
         }

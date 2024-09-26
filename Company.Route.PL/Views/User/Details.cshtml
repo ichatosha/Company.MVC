@@ -1,0 +1,20 @@
+﻿@using Company.Route.PL.ViewModels
+@model UserViewModel
+
+
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>User Details</h1>
+
+<div>
+    <partial name="UserPartialViews/DeleteDetailsUserPartialView" model="Model" />
+    <br />
+    <br />
+    @Html.ActionLink("Edit User", "Update", new { id = Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Delete User", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    <a class="btn btn-light" asp-action="Index">Back to User list</a>
+</div>

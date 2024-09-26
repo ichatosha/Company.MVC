@@ -1,0 +1,20 @@
+﻿@using Company.Route.PL.ViewModels
+@model RoleViewModel
+
+
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Role Details</h1>
+
+<div>
+    <partial name="RolePartialViews/DeleteDetailsRolePartialView" model="Model" />
+    <br />
+    <br />
+    @Html.ActionLink("Edit User", "Update", new { id = Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Delete User", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    <a class="btn btn-light" asp-action="Index">Back to Roles list</a>
+</div>
